@@ -1,5 +1,8 @@
 #!/bin/sh
 
+export FAILURE_PORT=5050
+export BACKUP_PORT=5055
+
 kill -9 `sudo lsof -t -i:$FAILURE_PORT`
 kill -9 `sudo lsof -t -i:$BACKUP_PORT`
 

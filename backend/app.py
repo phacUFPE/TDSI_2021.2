@@ -2,6 +2,7 @@ import os
 from urllib.parse import urlparse
 
 from flask import Flask, Response, request
+from flask_cors import CORS
 
 from backend.scripts import init_db
 from backend.services.database_service import DatabaseService
@@ -20,6 +21,7 @@ from backend.utils.functions import UtilFunctions
 
 init_db()
 app = Flask(__name__)
+CORS(app)
 
 
 @app.route(RouteConstants.PRODUCTS, methods=[HttpMethods.GET])
@@ -49,9 +51,10 @@ def add_product():
         status=HttpStatuses.BAD_REQUEST,
         response=ErrorMessages.WRONG_METHOD
     )
+
     if request.method == HttpMethods.POST:
-        name = request.form[ProductFieldsConstants.NAME]
-        price = request.form[ProductFieldsConstants.PRICE]
+        name = request.json[ProductFieldsConstants.NAME]
+        price = request.json[ProductFieldsConstants.PRICE]
 
         if not name:
             response = Response(
